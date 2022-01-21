@@ -1,7 +1,7 @@
 package com.spring.boot.security.saml.config;
 
 import com.spring.boot.security.saml.core.CurrentUserHandlerMethodArgumentResolver;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -11,10 +11,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.List;
 
 @Configuration
+@RequiredArgsConstructor
 public class MvcConfig implements WebMvcConfigurer {
 
-    @Autowired
-    CurrentUserHandlerMethodArgumentResolver currentUserHandlerMethodArgumentResolver;
+    private final CurrentUserHandlerMethodArgumentResolver currentUserHandlerMethodArgumentResolver;
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {

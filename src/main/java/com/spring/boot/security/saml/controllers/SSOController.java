@@ -1,8 +1,7 @@
 package com.spring.boot.security.saml.controllers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,31 +14,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Set;
 
+@Slf4j
 @Controller
 @RequestMapping("/saml")
+@RequiredArgsConstructor
 public class SSOController {
 
-    // Logger
-    private static final Logger LOG = LoggerFactory.getLogger(SSOController.class);
-
-    @Autowired
-    private MetadataManager metadata;
+    private final MetadataManager metadata;
 
     @GetMapping("/discovery")
     public String idpSelection(HttpServletRequest request, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null)
-            LOG.debug("Current authentication instance from security context is null");
-        else
-            LOG.debug("Current authentication instance from security context: {}", this.getClass().getSimpleName());
+        if (auth == null) {
+            log.debug("Current authentication instance from security context is null");
+        }
+        else {
+            log.debug("Current authentication instance from security context: {}", this.getClass().getSimpleName());
+        }
         if (auth == null || (auth instanceof AnonymousAuthenticationToken)) {
             Set<String> idps = metadata.getIDPEntityNames();
-            for (String idp : idps)
-                LOG.info("Configured Identity Provider for SSO: {}", idp);
+            for (String idp : idps) {
+                log.info("Configured Identity Provider for SSO: {}", idp);
+            }
             model.addAttribute("idps", idps);
             return "pages/discovery";
         } else {
-            LOG.warn("The current user is already logged.");
+            log.warn("The current user is already logged.");
             return "redirect:/landing";
         }
     }

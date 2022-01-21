@@ -14,8 +14,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import java.security.Principal;
 
 @Component
-public class CurrentUserHandlerMethodArgumentResolver implements
-        HandlerMethodArgumentResolver {
+public class CurrentUserHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
     public boolean supportsParameter(MethodParameter methodParameter) {
         return methodParameter.getParameterAnnotation(CurrentUser.class) != null
@@ -24,7 +23,7 @@ public class CurrentUserHandlerMethodArgumentResolver implements
 
     public Object resolveArgument(MethodParameter methodParameter,
                                   ModelAndViewContainer mavContainer, NativeWebRequest webRequest,
-                                  WebDataBinderFactory binderFactory) throws Exception {
+                                  WebDataBinderFactory binderFactory) {
         if (this.supportsParameter(methodParameter)) {
             Principal principal = webRequest.getUserPrincipal();
             if (principal == null) {

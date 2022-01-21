@@ -1,7 +1,6 @@
 package com.spring.boot.security.saml.core;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -12,11 +11,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
-
-    // Logger
-    private static final Logger LOG = LoggerFactory.getLogger(SAMLUserDetailsServiceImpl.class);
 
     public Object loadUserBySAML(SAMLCredential credential) {
 
@@ -25,12 +22,12 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
 
         String userID = credential.getNameID().getValue();
 
-        LOG.info("{} is logged in", userID);
+        log.info("{} is logged in", userID);
         List<GrantedAuthority> authorities = new ArrayList<>();
         GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USER");
         authorities.add(authority);
 
-        // In a real scenario, this implementation has to locate user in a arbitrary
+        // In a real scenario, this implementation has to locate user in an arbitrary
         // dataStore based on information present in the SAMLCredential and
         // returns such a date in a form of application specific UserDetails object.
         return new User(userID, "<abc123>", true, true, true, true, authorities);

@@ -2,16 +2,14 @@ package com.spring.boot.security.saml.controllers;
 
 import com.spring.boot.security.saml.CommonTestSupport;
 import com.spring.boot.security.saml.TestConfig;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.saml.metadata.MetadataManager;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.servlet.View;
@@ -26,14 +24,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestConfig.class})
 @WebAppConfiguration
 public class SSOControllerTest extends CommonTestSupport {
 
-    private static final Set<String> IDPS =
-            Collections.unmodifiableSet(
-                    new HashSet<>(Arrays.asList("idp1", "idp2", "idp3")));
+    private static final Set<String> IDPS = Set.of("idp1", "idp2", "idp3");
 
     @InjectMocks
     SSOController ssoController;
@@ -46,7 +41,7 @@ public class SSOControllerTest extends CommonTestSupport {
 
     private MockMvc mockMvc;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         mockMvc = standaloneSetup(ssoController).setSingleView(mockView).build();

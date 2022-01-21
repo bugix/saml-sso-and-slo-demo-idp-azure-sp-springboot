@@ -1,6 +1,7 @@
 package com.spring.boot.security.saml.config;
 
 import com.spring.boot.security.saml.core.SAMLUserDetailsServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.velocity.app.VelocityEngine;
@@ -52,6 +53,7 @@ import java.util.*;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
+@RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements InitializingBean, DisposableBean {
 
     private Timer backgroundTaskTimer;
@@ -83,8 +85,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements I
     @Value("${saml.private.key.password}")
     private String samlPrivateKeyPassword;
 
-    @Autowired
-    private SAMLUserDetailsServiceImpl samlUserDetailsServiceImpl;
+    private final SAMLUserDetailsServiceImpl samlUserDetailsServiceImpl;
 
     // Initialization of the velocity engine
     @Bean
@@ -176,8 +177,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements I
     @Bean
     public KeyManager keyManager() {
         DefaultResourceLoader loader = new DefaultResourceLoader();
-        Resource storeFile = loader
-                .getResource("classpath:/saml/samlKeystore.jks");
+        Resource storeFile = loader.getResource("classpath:/saml/samlKeystore.jks");
         String storePass = samlKeyStorePassword;
         Map<String, String> passwords = new HashMap<>();
         passwords.put(samlPrivateKeyAlias, samlPrivateKeyPassword);
